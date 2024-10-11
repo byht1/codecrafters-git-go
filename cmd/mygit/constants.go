@@ -6,16 +6,23 @@ type AvailableCommandsStruct struct {
 	Init       string
 	CatFile    string
 	HashObject string
+	LsTree     string
 }
 
 const (
-	RootDir string = ".git"
+	ROOT_DIR string = ".git"
+
+	TREE_MODE string = "040000"
+	BLOB_TYPE string = "blob"
+	TREE_TYPE string = "tree"
+
+	RAW_TREE_MODE string = "40000"
 )
 
 var (
 	AvailableCommands AvailableCommandsStruct
-	ObjectDir         string = path.Join(RootDir, "objects")
-	RefsDir           string = path.Join(RootDir, "refs")
+	ObjectDir         string = path.Join(ROOT_DIR, "objects")
+	RefsDir           string = path.Join(ROOT_DIR, "refs")
 )
 
 func NewAvailableCommands() AvailableCommandsStruct {
@@ -23,13 +30,14 @@ func NewAvailableCommands() AvailableCommandsStruct {
 		Init:       "init",
 		CatFile:    "cat-file",
 		HashObject: "hash-object",
+		LsTree:     "ls-tree",
 	}
 
 	return AvailableCommands
 }
 
 func RootPathBuilder(args ...string) string {
-	allArgs := append([]string{RootDir}, args...)
+	allArgs := append([]string{ROOT_DIR}, args...)
 	return path.Join(allArgs...)
 }
 

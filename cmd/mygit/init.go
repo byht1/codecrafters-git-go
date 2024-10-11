@@ -6,7 +6,7 @@ import (
 )
 
 func InitCmd() error {
-	for _, dir := range []string{RootDir, ObjectDir, RefsDir} {
+	for _, dir := range []string{ROOT_DIR, ObjectDir, RefsDir} {
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			return fmt.Errorf("error creating directory: %v", err)
 		}

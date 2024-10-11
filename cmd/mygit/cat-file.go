@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path"
 	"strings"
 )
 
@@ -23,7 +22,7 @@ func CatFileCmd() error {
 }
 
 func catFile(value string) error {
-	pathToFile := path.Join(".git/objects", value[0:2], value[2:])
+	pathToFile := ObjectPathBuilder(value[0:2], value[2:])
 	file, err := os.Open(pathToFile)
 	if err != nil {
 		return fmt.Errorf("error opening file: %v", err)

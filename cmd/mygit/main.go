@@ -21,6 +21,8 @@ func main() {
 		ProcessCmdFunc(CatFileCmd)
 	case AvailableCommands.HashObject:
 		ProcessCmdFunc(HashObjectCmd)
+	case AvailableCommands.LsTree:
+		ProcessCmdFunc(LsTreeCmd)
 	default:
 		fmt.Fprintf(os.Stderr, "Unknown command %s\n", command)
 		os.Exit(1)
