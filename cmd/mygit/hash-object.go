@@ -7,10 +7,10 @@ import (
 )
 
 func HashObjectCmd() error {
-	catFileCmd := flag.NewFlagSet(AvailableCommands.HashObject, flag.ExitOnError)
-	w := catFileCmd.String("w", "default", "description")
+	hashObjectCmd := flag.NewFlagSet(AvailableCommands.HashObject, flag.ExitOnError)
+	w := hashObjectCmd.String("w", PARAM_DEFAULT_VALUE, "description")
 
-	err := catFileCmd.Parse(os.Args[2:])
+	err := hashObjectCmd.Parse(os.Args[2:])
 	if err != nil {
 		return fmt.Errorf("error parsing flags: %v", err)
 	}

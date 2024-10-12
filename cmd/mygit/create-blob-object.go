@@ -49,3 +49,7 @@ func CreateBlobObject(pathToFile string) (string, error) {
 func CreateTreeObject(data []byte) (string, error) {
 	return createObject(TREE_TYPE, data)
 }
+
+func CreateCommitObject(data []byte) (string, error) {
+	return createObject(COMMIT_TYPE, data)
+}

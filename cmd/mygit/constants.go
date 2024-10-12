@@ -8,17 +8,21 @@ type AvailableCommandsStruct struct {
 	HashObject string
 	LsTree     string
 	WriteTree  string
+	CommitTree string
 }
 
 const (
 	ROOT_DIR string = ".git"
 
-	TREE_MODE string = "040000"
-	BLOB_TYPE string = "blob"
-	TREE_TYPE string = "tree"
+	TREE_MODE   string = "040000"
+	BLOB_TYPE   string = "blob"
+	TREE_TYPE   string = "tree"
+	COMMIT_TYPE string = "commit"
 
 	RAW_TREE_MODE string = "40000"
 	PREFIX_MODE   string = "100"
+
+	PARAM_DEFAULT_VALUE string = ""
 )
 
 var (
@@ -34,6 +38,7 @@ func NewAvailableCommands() AvailableCommandsStruct {
 		HashObject: "hash-object",
 		LsTree:     "ls-tree",
 		WriteTree:  "write-tree",
+		CommitTree: "commit-tree",
 	}
 
 	return AvailableCommands

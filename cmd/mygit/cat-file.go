@@ -11,7 +11,7 @@ import (
 
 func CatFileCmd() error {
 	catFileCmd := flag.NewFlagSet(AvailableCommands.CatFile, flag.ExitOnError)
-	p := catFileCmd.String("p", "default", "description")
+	p := catFileCmd.String("p", PARAM_DEFAULT_VALUE, "description")
 
 	err := catFileCmd.Parse(os.Args[2:])
 	if err != nil {

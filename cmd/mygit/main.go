@@ -25,6 +25,8 @@ func main() {
 		ProcessCmdFunc(LsTreeCmd)
 	case AvailableCommands.WriteTree:
 		ProcessCmdFunc(WriteTreeCmd)
+	case AvailableCommands.CommitTree:
+		ProcessCmdFunc(CommitTreeCmd)
 	default:
 		fmt.Fprintf(os.Stderr, "Unknown command %s\n", command)
 		os.Exit(1)

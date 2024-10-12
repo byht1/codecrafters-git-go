@@ -10,7 +10,12 @@ import (
 )
 
 func WriteTreeCmd() error {
-	hash, err := writeTree("./")
+	currentDir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	hash, err := writeTree(currentDir)
 	if err != nil {
 		return err
 	}
@@ -26,7 +31,7 @@ func writeTree(pathToDir string) (string, error) {
 		return "", err
 	}
 
-	var treeObj []TreeObject
+	var tree bytes.Buffer
 
 	for _, file := range files {
 		if file.Name() == ROOT_DIR {
@@ -39,16 +44,10 @@ func writeTree(pathToDir string) (string, error) {
 
 		processObject(pathToDir, file, &newObj)
 
-		treeObj = append(treeObj, newObj)
-	}
-
-	var tree bytes.Buffer
-
-	for _, obj := range treeObj {
-		entry := fmt.Sprintf("%s %s\000", obj.Mode, obj.Name)
+		entry := fmt.Sprintf("%s %s\000", newObj.Mode, newObj.Name)
 		tree.WriteString(entry)
 
-		shaBytes, err := hex.DecodeString(obj.Hash)
+		shaBytes, err := hex.DecodeString(newObj.Hash)
 		if err != nil {
 			return "", err
 		}

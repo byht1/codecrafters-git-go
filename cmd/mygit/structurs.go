@@ -6,3 +6,12 @@ type TreeObject struct {
 	Hash string
 	Name string
 }
+
+type CommitObject struct {
+	Tree    string
+	Parent  *string
+	Author  string
+	Email   string
+	Date    string
+	Message string
+}
