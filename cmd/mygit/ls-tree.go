@@ -10,13 +10,6 @@ import (
 	"os"
 )
 
-type TreeObject struct {
-	Mode string
-	Type string
-	Hash string
-	Name string
-}
-
 func LsTreeCmd() error {
 	var hash string
 

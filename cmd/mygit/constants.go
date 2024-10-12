@@ -7,6 +7,7 @@ type AvailableCommandsStruct struct {
 	CatFile    string
 	HashObject string
 	LsTree     string
+	WriteTree  string
 }
 
 const (
@@ -17,6 +18,7 @@ const (
 	TREE_TYPE string = "tree"
 
 	RAW_TREE_MODE string = "40000"
+	PREFIX_MODE   string = "100"
 )
 
 var (
@@ -31,6 +33,7 @@ func NewAvailableCommands() AvailableCommandsStruct {
 		CatFile:    "cat-file",
 		HashObject: "hash-object",
 		LsTree:     "ls-tree",
+		WriteTree:  "write-tree",
 	}
 
 	return AvailableCommands

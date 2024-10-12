@@ -23,6 +23,8 @@ func main() {
 		ProcessCmdFunc(HashObjectCmd)
 	case AvailableCommands.LsTree:
 		ProcessCmdFunc(LsTreeCmd)
+	case AvailableCommands.WriteTree:
+		ProcessCmdFunc(WriteTreeCmd)
 	default:
 		fmt.Fprintf(os.Stderr, "Unknown command %s\n", command)
 		os.Exit(1)
