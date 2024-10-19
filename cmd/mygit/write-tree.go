@@ -7,6 +7,9 @@ import (
 	"io/fs"
 	"os"
 	"path"
+
+	"github.com/codecrafters-io/git-starter-go/cmd/packages/constants"
+	gitObject "github.com/codecrafters-io/git-starter-go/cmd/packages/git-object"
 )
 
 func WriteTreeCmd() error {
@@ -34,7 +37,7 @@ func writeTree(pathToDir string) (string, error) {
 	var tree bytes.Buffer
 
 	for _, file := range files {
-		if file.Name() == ROOT_DIR {
+		if file.Name() == constants.ROOT_DIR {
 			continue
 		}
 
@@ -58,7 +61,7 @@ func writeTree(pathToDir string) (string, error) {
 		tree.Write(shaBytes)
 	}
 
-	hashString, err := CreateTreeObject(tree.Bytes())
+	_, hashString, err := gitObject.CreateTreeObject(tree.Bytes())
 	if err != nil {
 		return "", err
 	}
@@ -83,8 +86,8 @@ func processDir(pathToFile string, obj *TreeObject) error {
 	}
 
 	obj.Hash = hash
-	obj.Type = TREE_TYPE
-	obj.Mode = RAW_TREE_MODE
+	obj.Type = gitObject.TREE_TYPE
+	obj.Mode = gitObject.RAW_TREE_MODE
 
 	return nil
 }
@@ -95,14 +98,14 @@ func processFile(pathToFile string, obj *TreeObject) error {
 		return err
 	}
 
-	hash, err := CreateBlobObject(pathToFile)
+	_, hashString, err := gitObject.CreateBlobObject(pathToFile)
 	if err != nil {
 		return err
 	}
 
-	obj.Mode = fmt.Sprintf("%v%o", PREFIX_MODE, info.Mode().Perm())
-	obj.Type = BLOB_TYPE
-	obj.Hash = hash
+	obj.Mode = fmt.Sprintf("%v%o", gitObject.PREFIX_MODE, info.Mode().Perm())
+	obj.Type = gitObject.BLOB_TYPE
+	obj.Hash = hashString
 
 	return nil
 }

@@ -6,23 +6,26 @@ import (
 	"fmt"
 	"os"
 	"time"
+
+	"github.com/codecrafters-io/git-starter-go/cmd/packages/constants"
+	gitObject "github.com/codecrafters-io/git-starter-go/cmd/packages/git-object"
 )
 
 func CommitTreeCmd() error {
-	commitTree := flag.NewFlagSet(AvailableCommands.HashObject, flag.ExitOnError)
-	p := commitTree.String("p", PARAM_DEFAULT_VALUE, "Each -p indicates the id of a parent commit object")
-	m := commitTree.String("m", PARAM_DEFAULT_VALUE, "A paragraph in the commit log message. This can be given more than once and each <message> becomes its own paragraph")
+	commitTree := flag.NewFlagSet(constants.AvailableCommands.HashObject, flag.ExitOnError)
+	p := commitTree.String("p", constants.PARAM_DEFAULT_VALUE, "Each -p indicates the id of a parent commit object")
+	m := commitTree.String("m", constants.PARAM_DEFAULT_VALUE, "A paragraph in the commit log message. This can be given more than once and each <message> becomes its own paragraph")
 
 	err := commitTree.Parse(os.Args[3:])
 	if err != nil {
 		return fmt.Errorf("error parsing flags: %v", err)
 	}
 
-	if *p == PARAM_DEFAULT_VALUE {
+	if *p == constants.PARAM_DEFAULT_VALUE {
 		p = nil
 	}
 
-	if *m == PARAM_DEFAULT_VALUE {
+	if *m == constants.PARAM_DEFAULT_VALUE {
 		return fmt.Errorf("the -m option is optional")
 	}
 
@@ -42,7 +45,7 @@ func CommitTreeCmd() error {
 
 	var commit bytes.Buffer
 
-	commit.WriteString(fmt.Sprintf("%v %v\n", TREE_TYPE, obj.Tree))
+	commit.WriteString(fmt.Sprintf("%v %v\n", gitObject.TREE_TYPE, obj.Tree))
 	if obj.Parent != nil {
 		commit.WriteString(fmt.Sprintf("parent %v\n", *obj.Parent))
 	}
@@ -51,7 +54,7 @@ func CommitTreeCmd() error {
 	commit.WriteString(fmt.Sprintln(""))
 	commit.WriteString(fmt.Sprintln(obj.Message))
 
-	hashString, err := CreateCommitObject(commit.Bytes())
+	_, hashString, err := gitObject.CreateCommitObject(commit.Bytes())
 	if err != nil {
 		return err
 	}

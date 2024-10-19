@@ -1,17 +1,19 @@
 package main
 
 import (
-	"compress/zlib"
 	"flag"
 	"fmt"
 	"io"
 	"os"
 	"strings"
+
+	"github.com/codecrafters-io/git-starter-go/cmd/packages/constants"
+	zlibHelper "github.com/codecrafters-io/git-starter-go/cmd/packages/zlib-helper"
 )
 
 func CatFileCmd() error {
-	catFileCmd := flag.NewFlagSet(AvailableCommands.CatFile, flag.ExitOnError)
-	p := catFileCmd.String("p", PARAM_DEFAULT_VALUE, "description")
+	catFileCmd := flag.NewFlagSet(constants.AvailableCommands.CatFile, flag.ExitOnError)
+	p := catFileCmd.String("p", constants.PARAM_DEFAULT_VALUE, "description")
 
 	err := catFileCmd.Parse(os.Args[2:])
 	if err != nil {
@@ -22,23 +24,23 @@ func CatFileCmd() error {
 }
 
 func catFile(value string) error {
-	pathToFile := ObjectPathBuilder(value[0:2], value[2:])
+	pathToFile := constants.ObjectPathBuilder(value[0:2], value[2:])
 	file, err := os.Open(pathToFile)
 	if err != nil {
 		return fmt.Errorf("error opening file: %v", err)
 	}
 
-	r, err := zlib.NewReader(io.Reader(file))
+	byteData, err := io.ReadAll(file)
 	if err != nil {
 		return fmt.Errorf("error reading file: %v", err)
 	}
-	defer r.Close()
 
-	s, err := io.ReadAll(r)
+	_, object, err := zlibHelper.ReadObject(byteData)
 	if err != nil {
 		return fmt.Errorf("error reading file: %v", err)
 	}
-	parts := strings.Split(string(s), "\x00")
+
+	parts := strings.Split(string(object), "\x00")
 	fmt.Print(parts[1])
 
 	return nil

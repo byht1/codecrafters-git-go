@@ -8,12 +8,15 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"github.com/codecrafters-io/git-starter-go/cmd/packages/constants"
+	gitObject "github.com/codecrafters-io/git-starter-go/cmd/packages/git-object"
 )
 
 func LsTreeCmd() error {
 	var hash string
 
-	lsTreeCmd := flag.NewFlagSet(AvailableCommands.LsTree, flag.ExitOnError)
+	lsTreeCmd := flag.NewFlagSet(constants.AvailableCommands.LsTree, flag.ExitOnError)
 	nameOnly := lsTreeCmd.Bool("name-only", false, "show only names")
 
 	err := lsTreeCmd.Parse(os.Args[2:])
@@ -35,7 +38,7 @@ func LsTreeCmd() error {
 }
 
 func readTree(hash string, isNameOnly bool) (string, error) {
-	pathToGitObject := ObjectPathBuilder(hash[:2], hash[2:])
+	pathToGitObject := constants.ObjectPathBuilder(hash[:2], hash[2:])
 	file, err := os.Open(pathToGitObject)
 	if err != nil {
 		return "", fmt.Errorf("error opening file: %v", err)
@@ -82,11 +85,11 @@ func readTree(hash string, isNameOnly bool) (string, error) {
 		newObj.Name = string(bytes.TrimRight(objectant, "\x00"))
 		newObj.Hash = hex.EncodeToString(sha)
 
-		if newObj.Mode == RAW_TREE_MODE {
-			newObj.Mode = TREE_MODE
-			newObj.Type = TREE_TYPE
+		if newObj.Mode == gitObject.RAW_TREE_MODE {
+			newObj.Mode = gitObject.TREE_MODE
+			newObj.Type = gitObject.TREE_TYPE
 		} else {
-			newObj.Type = BLOB_TYPE
+			newObj.Type = gitObject.BLOB_TYPE
 		}
 
 		objCollection = append(objCollection, newObj)
